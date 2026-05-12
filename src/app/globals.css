@@ -4,20 +4,51 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #1f2937;
+  --primary: #ec4899;
+  --primary-light: #f9a8d4;
+  --gold: #d4af37;
+  --gold-light: #f3e5ab;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-300 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-400 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-gold-300 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gold-400 transition-colors duration-200;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-300 focus:border-transparent outline-none transition-all;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-md p-6 border border-gray-100;
+  }
+  
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  
+  .badge-primary {
+    @apply bg-primary-100 text-primary-800;
+  }
 }
 
 @layer utilities {

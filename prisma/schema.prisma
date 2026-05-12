@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  phone         String    @unique
+  role          String    @default("CLIENT") // ADMIN | CLIENT
+  email         String?   @unique
+  passwordHash  String?
+  createdAt     DateTime  @default(now())
+
+  // Better Auth
+  sessions      Session[]
+  accounts      Account[]
+
+  // Fidelidade
+  loyaltyCards  LoyaltyCard[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Account {
+  id           String  @id @default(cuid())
+  userId       String
+  provider     String
+  providerAccountId String
+  user         User    @relation(fields: [userId], references: [id])
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   // SERVICE | PRODUCT
+  qrCode      String   @unique
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  loyaltyEntries LoyaltyEntry[]
+}
+
+model LoyaltyCard {
+  id        String   @id @default(cuid())
+  userId    String
+  createdAt DateTime @default(now())
+
+  user      User           @relation(fields: [userId], references: [id])
+  entries   LoyaltyEntry[]
+  rewards   Reward[]
+}
+
+model LoyaltyEntry {
+  id            String      @id @default(cuid())
+  loyaltyCardId String
+  serviceId     String
+  registeredAt  DateTime    @default(now())
+
+  loyaltyCard   LoyaltyCard @relation(fields: [loyaltyCardId], references: [id])
+  service       Service     @relation(fields: [serviceId], references: [id])
+}
+
+model Reward {
+  id            String      @id @default(cuid())
+  loyaltyCardId String
+  type          String      // GIFT | DISCOUNT_50
+  reason        String      // ex: "3x Hidratação", "5º Serviço"
+  used          Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+
+  loyaltyCard   LoyaltyCard @relation(fields: [loyaltyCardId], references: [id])
+}
+
+model Promotion {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  active      Boolean  @default(true)
+  startsAt    DateTime
+  endsAt      DateTime
+  createdAt   DateTime @default(now())
+}
