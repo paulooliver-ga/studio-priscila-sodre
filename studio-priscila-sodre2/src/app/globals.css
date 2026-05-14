@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: linear-gradient(135deg, #111111 0%, #1e1505 50%, #111111 100%);
+  min-height: 100vh;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-black font-bold px-6 py-3 rounded-2xl shadow-lg transition-all duration-200
+           hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed;
+    background: linear-gradient(135deg, #D4AF37, #f0d060, #D4AF37);
+  }
+  .btn-gold {
+    @apply text-black font-bold px-6 py-3 rounded-2xl shadow-lg transition-all duration-200;
+    background: linear-gradient(135deg, #D4AF37, #f0d060);
+  }
+  .btn-outline {
+    @apply border-2 border-yellow-600 text-yellow-400 font-semibold px-6 py-3 rounded-2xl
+           hover:bg-yellow-900/20 transition-all duration-200;
+  }
+  .card {
+    @apply rounded-3xl shadow-lg border p-5;
+    background: rgba(25, 18, 5, 0.9);
+    border-color: rgba(212, 175, 55, 0.25);
+    backdrop-filter: blur(10px);
+  }
+  .input-field {
+    @apply w-full border-2 rounded-2xl px-4 py-3 placeholder-gray-600
+           focus:outline-none transition-all duration-200;
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(212, 175, 55, 0.35);
+    color: #f5e6a3;
+  }
+  .input-field:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.12);
+    outline: none;
+  }
+  .gold-text {
+    background: linear-gradient(135deg, #D4AF37, #f5d76e, #b8860b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 99px; }
+
+select, textarea {
+  background: rgba(255,255,255,0.05) !important;
+  color: #f5e6a3 !important;
+}
+option { background: #1a1a1a; color: #f5e6a3; }

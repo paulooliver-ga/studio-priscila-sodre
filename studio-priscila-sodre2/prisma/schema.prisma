@@ -1,0 +1,153 @@
+
+generator client {
+
+  provider = "prisma-client-js"
+
+}
+
+
+
+datasource db {
+
+  provider = "postgresql"
+
+  url      = env("DATABASE_URL")
+
+}
+
+
+
+model User {
+
+  id           String        @id @default(cuid())
+
+  name         String
+
+  phone        String        @unique
+
+  email        String?       @unique
+
+  passwordHash String
+
+  role         String        @default("CLIENT")
+
+  createdAt    DateTime      @default(now())
+
+  loyaltyCards LoyaltyCard[]
+
+  sessions     Session[]
+
+}
+
+
+
+model Session {
+
+  id        String   @id @default(cuid())
+
+  userId    String
+
+  token     String   @unique
+
+  expiresAt DateTime
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+
+
+model Service {
+
+  id             String         @id @default(cuid())
+
+  name           String
+
+  type           String
+
+  qrCode         String         @unique
+
+  active         Boolean        @default(true)
+
+  createdAt      DateTime       @default(now())
+
+  loyaltyEntries LoyaltyEntry[]
+
+}
+
+
+
+model LoyaltyCard {
+
+  id        String         @id @default(cuid())
+
+  userId    String
+
+  createdAt DateTime       @default(now())
+
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  entries   LoyaltyEntry[]
+
+  rewards   Reward[]
+
+}
+
+
+
+model LoyaltyEntry {
+
+  id            String      @id @default(cuid())
+
+  loyaltyCardId String
+
+  serviceId     String
+
+  registeredAt  DateTime    @default(now())
+
+  loyaltyCard   LoyaltyCard @relation(fields: [loyaltyCardId], references: [id], onDelete: Cascade)
+
+  service       Service     @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+}
+
+
+
+model Reward {
+
+  id            String      @id @default(cuid())
+
+  loyaltyCardId String
+
+  type          String
+
+  reason        String
+
+  used          Boolean     @default(false)
+
+  createdAt     DateTime    @default(now())
+
+  loyaltyCard   LoyaltyCard @relation(fields: [loyaltyCardId], references: [id], onDelete: Cascade)
+
+}
+
+
+
+model Promotion {
+
+  id          String   @id @default(cuid())
+
+  title       String
+
+  description String
+
+  active      Boolean  @default(true)
+
+  startsAt    DateTime
+
+  endsAt      DateTime
+
+  createdAt   DateTime @default(now())
+
+}
+
