@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import toast from "react-hot-toast";
