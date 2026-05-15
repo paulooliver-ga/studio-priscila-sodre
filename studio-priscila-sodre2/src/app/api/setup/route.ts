@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
   if (secret !== "priscila-setup-2024") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
   try {
     const adminHash = await bcrypt.hash("admin123", 10);
     await prisma.user.upsert({
@@ -20,7 +19,6 @@ export async function GET(req: NextRequest) {
         role: "ADMIN",
       },
     });
-
     const services = [
       { name: "Corte", type: "SERVICE", qrCode: "qr-priscila-corte" },
       { name: "Escova", type: "SERVICE", qrCode: "qr-priscila-escova" },
@@ -28,7 +26,6 @@ export async function GET(req: NextRequest) {
       { name: "Mechas", type: "SERVICE", qrCode: "qr-priscila-mechas" },
       { name: "Queratina", type: "PRODUCT", qrCode: "qr-priscila-queratina" },
     ];
-
     for (const s of services) {
       await prisma.service.upsert({
         where: { qrCode: s.qrCode },
@@ -36,7 +33,6 @@ export async function GET(req: NextRequest) {
         create: s,
       });
     }
-
     return NextResponse.json({ ok: true, message: "Setup concluído!" });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
