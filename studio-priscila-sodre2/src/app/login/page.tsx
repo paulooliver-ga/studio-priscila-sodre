@@ -65,38 +65,48 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {mode === "register" && (
-           <div>
-             <label className="text-xs font-semibold uppercase tracking-wide block mb-1" 
-               style={{ color: "rgba(212,175,55,0.6)" }}>Data de Aniversário</label>
-             <input className="input-field" type="date"
-                value={form.birthdate}
-               onChange={(e) => setForm({ ...form, birthdate: e.target.value })} />
-             <p className="text-xs mt-1" style={{ color: "rgba(212,175,55,0.3)" }}>
-               Ganhe 10% de desconto no seu aniversário! 🎂
-             </p>
-            </div>
-          )}
+  {mode === "register" && (
+    <div>
+      <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
+        style={{ color: "rgba(212,175,55,0.6)" }}>Nome completo</label>
+      <input className="input-field" placeholder="Seu nome"
+        value={form.name}
+        onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+    </div>
+  )}
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
-              style={{ color: "rgba(212,175,55,0.6)" }}>Telefone (somente números)</label>
-            <input className="input-field" placeholder="61999999999"
-              value={form.phone} onChange={(e) => handlePhone(e.target.value)} required />
-            <p className="text-xs mt-1" style={{ color: "rgba(212,175,55,0.3)" }}>Ex: 61982533037</p>
-          </div>
+  <div>
+    <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
+      style={{ color: "rgba(212,175,55,0.6)" }}>Telefone (somente números)</label>
+    <input className="input-field" placeholder="61999999999"
+      value={form.phone} onChange={(e) => handlePhone(e.target.value)} required />
+    <p className="text-xs mt-1" style={{ color: "rgba(212,175,55,0.3)" }}>Ex: 61982533037</p>
+  </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
-              style={{ color: "rgba(212,175,55,0.6)" }}>Senha</label>
-            <input className="input-field" type="password" placeholder="••••••••"
-              value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-          </div>
+  <div>
+    <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
+      style={{ color: "rgba(212,175,55,0.6)" }}>Senha</label>
+    <input className="input-field" type="password" placeholder="••••••••"
+      value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+  </div>
 
-          <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
-            {loading ? "Aguarde..." : mode === "login" ? "Entrar ✨" : "Criar conta"}
-          </button>
-        </form>
+  {mode === "register" && (
+    <div>
+      <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
+        style={{ color: "rgba(212,175,55,0.6)" }}>Data de Aniversário</label>
+      <input className="input-field" type="date"
+        value={form.birthdate}
+        onChange={(e) => setForm({ ...form, birthdate: e.target.value })} />
+      <p className="text-xs mt-1" style={{ color: "rgba(212,175,55,0.3)" }}>
+        Ganhe 10% de desconto no seu aniversário! 🎂
+      </p>
+    </div>
+  )}
+
+  <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
+    {loading ? "Aguarde..." : mode === "login" ? "Entrar ✨" : "Criar conta"}
+  </button>
+</form>
       </div>
 
       <p className="text-xs mt-6" style={{ color: "rgba(212,175,55,0.3)" }}>
