@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import LogoutButton from "@/components/LogoutButton";
 import { getSession } from "@/lib/auth";
 import BottomNav from "@/components/BottomNav";
 import { LOGO_BASE64 } from "@/lib/logo";
@@ -21,9 +22,7 @@ export default async function ClienteLayout({ children }: { children: React.Reac
               <p className="text-xs" style={{ color: "rgba(212,175,55,0.5)" }}>Olá, {user.name.split(" ")[0]} ✨</p>
             </div>
           </div>
-          <form action="/api/auth/logout" method="POST">
-            <button type="submit" className="text-xs" style={{ color: "rgba(212,175,55,0.5)" }}>Sair</button>
-          </form>
+          <LogoutButton />
         </div>
       </header>
       <main className="max-w-lg mx-auto px-4 py-6">{children}</main>
