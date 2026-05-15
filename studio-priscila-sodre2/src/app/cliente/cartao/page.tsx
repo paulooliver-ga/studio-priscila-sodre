@@ -5,6 +5,10 @@ import { getOrCreateCard } from "@/lib/loyalty";
 
 export default async function CartaoPage({ searchParams }: { searchParams: { scanned?: string; error?: string } }) {
   const user = await getSession();
+  const today = new Date();
+  const isBirthday = user.birthdate && 
+  new Date(user.birthdate).getDate() === today.getDate() &&
+  new Date(user.birthdate).getMonth() === today.getMonth();
   if (!user) return null;
 
   const card = await getOrCreateCard(user.id);
@@ -31,6 +35,16 @@ export default async function CartaoPage({ searchParams }: { searchParams: { sca
   return (
     <div className="space-y-5">
       {searchParams.scanned === "1" && (
+       {isBirthday && (
+        <div className="rounded-2xl p-4 text-center font-semibold"
+           style={{ background: "rgba(212,175,55,0.15)", border: "2px solid rgba(212,175,55,0.5)" }}>
+           <p className="text-2xl mb-1">🎂</p>
+           <p className="font-bold gold-text text-lg">Feliz Aniversário, {user.name.split(" ")[0]}!</p>
+           <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.7)" }}>
+             Você ganhou 10% de desconto hoje! Mostre para a atendente 🎁
+          </p>
+        </div>
+      )}
         <div className="rounded-2xl p-4 text-center font-semibold"
           style={{ background: "rgba(212,175,55,0.15)", border: "1px solid rgba(212,175,55,0.4)", color: "#D4AF37" }}>
           ✅ Serviço registrado no seu cartão!

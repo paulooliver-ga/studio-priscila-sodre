@@ -6,10 +6,30 @@ import toast from "react-hot-toast";
 interface Promotion { id: string; title: string; description: string; active: boolean; startsAt: string; endsAt: string; }
 
 export default function PromocoesAdminPage() {
+  const [sending, setSending] = useState(false);
+
+  async function sendWhatsAppReminder(promo: Promotion) {
+  setSending(true);
+  try {
+    const res = await fetch("/api/admin/notify-clients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: promo.title, description: promo.description }),
+    });
+    const data = await res.json();
+    setWaLinks(data.links);
+    toast.success(`${data.count} clientes encontradas! 📣`);
+  } catch {
+    toast.error("Erro ao buscar clientes");
+  } finally {
+    setSending(false);
+  }
+}
   const [promos, setPromos] = useState<Promotion[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ title: "", description: "", startsAt: "", endsAt: "" });
   const [adding, setAdding] = useState(false);
+  const [waLinks, setWaLinks] = useState<{name: string; phone: string; link: string}[]>([]);
 
   async function load() {
     const res = await fetch("/api/admin/promotions");
@@ -30,7 +50,27 @@ export default function PromocoesAdminPage() {
     } catch { toast.error("Erro ao criar"); }
     finally { setAdding(false); }
   }
-
+    {waLinks.length > 0 && (
+  <div className="card">
+    <h3 className="font-bold gold-text mb-3">📣 Enviar para clientes</h3>
+    <p className="text-xs mb-4" style={{ color: "rgba(212,175,55,0.5)" }}>
+      Clique em cada cliente para abrir o WhatsApp
+    </p>
+    <div className="space-y-2">
+      {waLinks.map((l) => (
+        <a key={l.phone} href={l.link} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-between rounded-2xl px-4 py-3 transition-all hover:opacity-80"
+          style={{ background: "rgba(37,211,102,0.1)", border: "1px solid rgba(37,211,102,0.2)" }}>
+          <div>
+            <p className="text-sm font-semibold" style={{ color: "#f5e6a3" }}>{l.name}</p>
+            <p className="text-xs" style={{ color: "rgba(212,175,55,0.4)" }}>📞 {l.phone}</p>
+          </div>
+          <span style={{ color: "#25d366" }}>💬</span>
+        </a>
+      ))}
+    </div>
+  </div>
+)}
   return (
     <div className="space-y-5">
       <div>
@@ -79,6 +119,11 @@ export default function PromocoesAdminPage() {
                 }} className="text-xs px-3 py-1.5 rounded-full font-semibold border whitespace-nowrap"
                   style={{ borderColor: "rgba(212,175,55,0.3)", color: "rgba(212,175,55,0.6)" }}>
                   {p.active ? "Encerrar" : "Ativar"}
+                  <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
+                     className="text-xs px-3 py-1.5 rounded-full font-semibold mt-2 w-full"
+                     style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
+                     📣 Notificar clientes via WhatsApp
+                  </button>
                 </button>
               </div>
             </div>

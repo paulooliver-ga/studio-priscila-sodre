@@ -8,8 +8,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", password: "" });
 
+  const [form, setForm] = useState({ name: "", phone: "", password: "", birthdate: "" });
   function handlePhone(v: string) {
     setForm({ ...form, phone: v.replace(/\D/g, "") });
   }
@@ -66,11 +66,15 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "register" && (
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wide block mb-1"
-                style={{ color: "rgba(212,175,55,0.6)" }}>Nome completo</label>
-              <input className="input-field" placeholder="Seu nome"
-                value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+           <div>
+             <label className="text-xs font-semibold uppercase tracking-wide block mb-1" 
+               style={{ color: "rgba(212,175,55,0.6)" }}>Data de Aniversário</label>
+             <input className="input-field" type="date"
+                value={form.birthdate}
+               onChange={(e) => setForm({ ...form, birthdate: e.target.value })} />
+             <p className="text-xs mt-1" style={{ color: "rgba(212,175,55,0.3)" }}>
+               Ganhe 10% de desconto no seu aniversário! 🎂
+             </p>
             </div>
           )}
 
