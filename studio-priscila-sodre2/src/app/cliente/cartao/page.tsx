@@ -35,21 +35,28 @@ export default async function CartaoPage({ searchParams }: { searchParams: { sca
   return (
     <div className="space-y-5">
       {searchParams.scanned === "1" && (
-       {isBirthday && (
-        <div className="rounded-2xl p-4 text-center font-semibold"
-           style={{ background: "rgba(212,175,55,0.15)", border: "2px solid rgba(212,175,55,0.5)" }}>
-           <p className="text-2xl mb-1">🎂</p>
-           <p className="font-bold gold-text text-lg">Feliz Aniversário, {user.name.split(" ")[0]}!</p>
-           <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.7)" }}>
-             Você ganhou 10% de desconto hoje! Mostre para a atendente 🎁
-          </p>
-        </div>
-      )}
+       
+    <div className="rounded-2xl p-4 text-center font-semibold"
+        style={{ background: "rgba(212,175,55,0.15)", border: "1px solid rgba(212,175,55,0.4)", color: "#D4AF37" }}>
+           ✅ Serviço registrado no seu cartão!
+     </div>
+ )}
+
+ {isBirthday && (
+    <div className="rounded-2xl p-4 text-center font-semibold"
+          style={{ background: "rgba(212,175,55,0.15)", border: "2px solid rgba(212,175,55,0.5)" }}>
+          <p className="text-2xl mb-1">🎂</p>
+          <p className="font-bold gold-text text-lg">Feliz Aniversário, {user.name.split(" ")[0]}!</p>
+          <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.7)" }}>
+          Você ganhou 10% de desconto hoje! Mostre para a atendente 🎁
+        </p>
+    </div>
+       )}
         <div className="rounded-2xl p-4 text-center font-semibold"
           style={{ background: "rgba(212,175,55,0.15)", border: "1px solid rgba(212,175,55,0.4)", color: "#D4AF37" }}>
           ✅ Serviço registrado no seu cartão!
         </div>
-      )}
+       
       {searchParams.error === "1" && (
         <div className="rounded-2xl p-4 text-center font-semibold"
           style={{ background: "rgba(255,50,50,0.1)", border: "1px solid rgba(255,50,50,0.3)", color: "#ff6b6b" }}>
