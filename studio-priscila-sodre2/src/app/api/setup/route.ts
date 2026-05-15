@@ -10,15 +10,15 @@ export async function GET(req: NextRequest) {
   try {
     const adminHash = await bcrypt.hash("admin123", 10);
     await prisma.user.upsert({
-      where: { phone: "61982533037" },
-      update: {},
-      create: {
-        name: "Priscila Sodré",
-        phone: "61982533037",
-        passwordHash: adminHash,
-        role: "ADMIN",
-      },
-    });
+  where: { phone: "61982533037" },
+  update: { passwordHash: adminHash, role: "ADMIN" },
+  create: {
+    name: "Priscila Sodré",
+    phone: "61982533037",
+    passwordHash: adminHash,
+    role: "ADMIN",
+  },
+});
     const services = [
       { name: "Corte", type: "SERVICE", qrCode: "qr-priscila-corte" },
       { name: "Escova", type: "SERVICE", qrCode: "qr-priscila-escova" },
