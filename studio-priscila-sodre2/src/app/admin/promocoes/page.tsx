@@ -31,25 +31,23 @@ export default function PromocoesAdminPage() {
   const [adding, setAdding] = useState(false);
   const [waLinks, setWaLinks] = useState<{name: string; phone: string; link: string}[]>([]);
 
-  async function load() {
-    const res = await fetch("/api/admin/promotions");
-    setPromos(await res.json());
-    setLoading(false);
+ async function togglePromo(id: string) {
+  setToggling(true);
+  try {
+    const res = await fetch(`/api/admin/promotions/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ active: !promos.find(p => p.id === id)?.active }),
+    });
+    if (!res.ok) { toast.error("Erro ao ativar/desativar"); return; }
+    toast.success("Promoção atualizada!");
+    load();
+  } catch {
+    toast.error("Erro");
+  } finally {
+    setToggling(false);
   }
-  useEffect(() => { load(); }, []);
-
-  async function handleAdd(e: React.FormEvent) {
-    e.preventDefault();
-    setAdding(true);
-    try {
-      const res = await fetch("/api/admin/promotions", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-      if (!res.ok) throw new Error();
-      toast.success("Promoção criada! 🌟");
-      setForm({ title: "", description: "", startsAt: "", endsAt: "" });
-      load();
-    } catch { toast.error("Erro ao criar"); }
-    finally { setAdding(false); }
-  }
+}
    {waLinks.length > 0 && (
   <div className="card">
     <h3 className="font-bold gold-text mb-3">📣 Enviar para clientes</h3>
