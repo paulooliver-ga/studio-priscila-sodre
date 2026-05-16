@@ -80,8 +80,25 @@ export default function PromocoesAdminPage() {
     }
   }
 
-  async function sendWhatsAppReminder(promo: Promotion) {
-    async function deletePromo(id: string) {
+ async function sendWhatsAppReminder(promo: Promotion) {
+  setSending(true);
+  try {
+    const res = await fetch("/api/admin/notify-clients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: promo.title, description: promo.description }),
+    });
+    const data = await res.json();
+    setWaLinks(data.links);
+    toast.success(`${data.count} clientes encontradas! 📣`);
+  } catch {
+    toast.error("Erro ao buscar clientes");
+  } finally {
+    setSending(false);
+  }
+}
+
+async function deletePromo(id: string) {
   if (!confirm("Deletar esta promoção?")) return;
   setDeleting(true);
   try {
