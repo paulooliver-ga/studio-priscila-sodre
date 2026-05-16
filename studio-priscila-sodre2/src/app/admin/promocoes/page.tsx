@@ -98,6 +98,7 @@ export default function PromocoesAdminPage() {
   }
 }
 
+
 async function deletePromo(id: string) {
   if (!confirm("Deletar esta promoção?")) return;
   setDeleting(true);
