@@ -1,56 +1,91 @@
 "use client";
-export const dynamic = "force-dynamic";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-interface Promotion { id: string; title: string; description: string; active: boolean; startsAt: string; endsAt: string; }
-
 export default function PromocoesAdminPage() {
-  const [toggling, setToggling] = useState(false);
-
-  async function handleAdd(e: React.FormEvent) {
-  e.preventDefault();
-  setAdding(true);
-  try {
-    const res = await fetch("/api/admin/promotions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    if (!res.ok) throw new Error("Erro");
-    toast.success("Promoção criada! 🎉");
-    setForm({ title: "", description: "", startsAt: "", endsAt: "" });
-    load();
-  } catch {
-    toast.error("Erro ao criar");
-  } finally {
-    setAdding(false);
-  }
-}
+  // States
   const [promos, setPromos] = useState<Promotion[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ title: "", description: "", startsAt: "", endsAt: "" });
   const [adding, setAdding] = useState(false);
+  const [toggling, setToggling] = useState(false);
+  const [sending, setSending] = useState(false);
   const [waLinks, setWaLinks] = useState<{name: string; phone: string; link: string}[]>([]);
 
+  // Functions
   async function load() {
-  setLoading(true);
-  try {
-    const res = await fetch("/api/admin/promotions");
-    if (!res.ok) throw new Error("Erro");
-    const data = await res.json();
-    setPromos(data);
-  } catch {
-    toast.error("Erro ao carregar");
-  } finally {
-    setLoading(false);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/promotions");
+      if (!res.ok) throw new Error("Erro");
+      const data = await res.json();
+      setPromos(data);
+    } catch {
+      toast.error("Erro ao carregar");
+    } finally {
+      setLoading(false);
+    }
   }
-}
+
+  async function handleAdd(e: React.FormEvent) {
+    e.preventDefault();
+    setAdding(true);
+    try {
+      const res = await fetch("/api/admin/promotions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Erro");
+      toast.success("Promoção criada! 🎉");
+      setForm({ title: "", description: "", startsAt: "", endsAt: "" });
+      load();
+    } catch {
+      toast.error("Erro ao criar");
+    } finally {
+      setAdding(false);
+    }
+  }
+
+  async function togglePromo(id: string) {
+    setToggling(true);
+    try {
+      const res = await fetch(`/api/admin/promotions/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ active: !promos.find(p => p.id === id)?.active }),
+      });
+      if (!res.ok) throw new Error("Erro");
+      toast.success("Promoção atualizada!");
+      load();
+    } catch {
+      toast.error("Erro ao ativar/desativar");
+    } finally {
+      setToggling(false);
+    }
+  }
+
+  async function sendWhatsAppReminder(promo: Promotion) {
+    setSending(true);
+    try {
+      const res = await fetch("/api/admin/notify-clients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: promo.title, description: promo.description }),
+      });
+      const data = await res.json();
+      setWaLinks(data.links);
+      toast.success(`${data.count} clientes encontradas! 📣`);
+    } catch {
+      toast.error("Erro ao buscar clientes");
+    } finally {
+      setSending(false);
+    }
+  }
+
   useEffect(() => {
-  load();
-}, []);
-
-
+    load();
+  }, []);
 
  async function togglePromo(id: string) {
   setToggling(true);
