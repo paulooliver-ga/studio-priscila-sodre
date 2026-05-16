@@ -113,6 +113,10 @@ async function deletePromo(id: string) {
     setDeleting(false);
   }
 }
+
+async function sendWhatsAppReminder(promo: Promotion) {
+  setSending(true);
+  try {
     setSending(true);
     try {
       const res = await fetch("/api/admin/notify-clients", {
