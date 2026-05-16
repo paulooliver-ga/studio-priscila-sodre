@@ -8,21 +8,23 @@ interface Promotion { id: string; title: string; description: string; active: bo
 export default function PromocoesAdminPage() {
   const [sending, setSending] = useState(false);
 
-  async function sendWhatsAppReminder(promo: Promotion) {
-  setSending(true);
+  async function handleAdd(e: React.FormEvent) {
+  e.preventDefault();
+  setAdding(true);
   try {
-    const res = await fetch("/api/admin/notify-clients", {
+    const res = await fetch("/api/admin/promotions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: promo.title, description: promo.description }),
+      body: JSON.stringify(form),
     });
-    const data = await res.json();
-    setWaLinks(data.links);
-    toast.success(`${data.count} clientes encontradas! 📣`);
+    if (!res.ok) throw new Error("Erro");
+    toast.success("Promoção criada! 🎉");
+    setForm({ title: "", description: "", startsAt: "", endsAt: "" });
+    load();
   } catch {
-    toast.error("Erro ao buscar clientes");
+    toast.error("Erro ao criar");
   } finally {
-    setSending(false);
+    setAdding(false);
   }
 }
   const [promos, setPromos] = useState<Promotion[]>([]);
