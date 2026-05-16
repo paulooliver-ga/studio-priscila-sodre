@@ -8,6 +8,7 @@ export default function PromocoesAdminPage() {
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ title: "", description: "", startsAt: "", endsAt: "" });
   const [adding, setAdding] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [toggling, setToggling] = useState(false);
   const [sending, setSending] = useState(false);
   const [waLinks, setWaLinks] = useState<{name: string; phone: string; link: string}[]>([]);
@@ -48,6 +49,20 @@ export default function PromocoesAdminPage() {
   }
 
   async function togglePromo(id: string) {
+    async function deletePromo(id: string) {
+  if (!confirm("Deletar esta promoção?")) return;
+  setDeleting(true);
+  try {
+    const res = await fetch(`/api/admin/promotions/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Erro");
+    toast.success("Promoção deletada!");
+    load();
+  } catch {
+    toast.error("Erro ao deletar");
+  } finally {
+    setDeleting(false);
+  }
+}
     setToggling(true);
     try {
       const res = await fetch(`/api/admin/promotions/${id}`, {
@@ -66,6 +81,20 @@ export default function PromocoesAdminPage() {
   }
 
   async function sendWhatsAppReminder(promo: Promotion) {
+    async function deletePromo(id: string) {
+  if (!confirm("Deletar esta promoção?")) return;
+  setDeleting(true);
+  try {
+    const res = await fetch(`/api/admin/promotions/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Erro");
+    toast.success("Promoção deletada!");
+    load();
+  } catch {
+    toast.error("Erro ao deletar");
+  } finally {
+    setDeleting(false);
+  }
+}
     setSending(true);
     try {
       const res = await fetch("/api/admin/notify-clients", {
@@ -162,33 +191,30 @@ export default function PromocoesAdminPage() {
               {new Date(p.startsAt).toLocaleDateString('pt-BR')} → {new Date(p.endsAt).toLocaleDateString('pt-BR')}
             </p>
           </div>
-
           <div className="flex gap-2">
-                <button onClick={() => togglePromo(p.id)} disabled={toggling}
-                    className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-                    style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
-                   {p.active ? "✓ Ativa" : "○ Inativa"}
-                </button>
-                <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
-                    className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-                    style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
-                     📣 WhatsApp
-                </button>
-                 {!p.active && (
-                <button onClick={() => deletePromo(p.id)} disabled={deleting}
-                     className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-                     style={{ background: "rgba(255,60,60,0.15)", color: "#ff3c3c" }}>
-                  🗑️
-                </button>
-             )}
-             </div>
-
+            <button onClick={() => togglePromo(p.id)} disabled={toggling}
+              className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+              style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
+              {p.active ? "✓ Ativa" : "○ Inativa"}
+            </button>
+            <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
+              className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+              style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
+              📣 WhatsApp
+            </button>
+            {!p.active && (
+              <button onClick={() => deletePromo(p.id)} disabled={deleting}
+                className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+                style={{ background: "rgba(255,60,60,0.15)", color: "#ff3c3c" }}>
+                🗑️
+              </button>
+            )}
           </div>
         </div>
       </div>
-    ))}
-  </div>
-)};
-</div>
-);
+    ))} 
+    </div>
+  )}
+    </div>
+  );
 }
