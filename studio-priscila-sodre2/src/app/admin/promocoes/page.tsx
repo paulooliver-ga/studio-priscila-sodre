@@ -164,16 +164,25 @@ export default function PromocoesAdminPage() {
           </div>
 
           <div className="flex gap-2">
-            <button onClick={() => togglePromo(p.id)} disabled={toggling}
-              className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-              style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
-              {p.active ? "✓ Ativa" : "○ Inativa"}
-            </button>
-            <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
-              className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-              style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
-              📣 WhatsApp
-            </button>
+                <button onClick={() => togglePromo(p.id)} disabled={toggling}
+                    className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+                    style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
+                   {p.active ? "✓ Ativa" : "○ Inativa"}
+                </button>
+                <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
+                    className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+                    style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
+                     📣 WhatsApp
+                </button>
+                 {!p.active && (
+                <button onClick={() => deletePromo(p.id)} disabled={deleting}
+                     className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+                     style={{ background: "rgba(255,60,60,0.15)", color: "#ff3c3c" }}>
+                  🗑️
+                </button>
+             )}
+             </div>
+
           </div>
         </div>
       </div>
