@@ -96,39 +96,28 @@ export default function PromocoesAdminPage() {
         </form>
       </div>
       {loading ? <p className="text-center py-8" style={{ color: "rgba(212,175,55,0.4)" }}>Carregando...</p> : (
-        <div className="space-y-3">
-          {promos.map((p) => (
-            <div key={p.id} className={`card ${!p.active ? "opacity-50" : ""}`}>
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold" style={{ color: "#f5e6a3" }}>{p.title}</p>
-                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                      style={p.active ? { background: "rgba(212,175,55,0.2)", color: "#D4AF37" } : { background: "rgba(255,255,255,0.05)", color: "rgba(212,175,55,0.3)" }}>
-                      {p.active ? "Ativa" : "Inativa"}
-                    </span>
-                  </div>
-                  <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.5)" }}>{p.description}</p>
-                  <p className="text-xs mt-2" style={{ color: "rgba(212,175,55,0.3)" }}>
-                    {new Date(p.startsAt).toLocaleDateString("pt-BR")} → {new Date(p.endsAt).toLocaleDateString("pt-BR")}
-                  </p>
-                </div>
-                <button onClick={async () => {
-                  await fetch(`/api/admin/promotions/${p.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ active: !p.active }) });
-                  load();
-                }} className="text-xs px-3 py-1.5 rounded-full font-semibold border whitespace-nowrap"
-                  style={{ borderColor: "rgba(212,175,55,0.3)", color: "rgba(212,175,55,0.6)" }}>
-                  {p.active ? "Encerrar" : "Ativar"}
-                  <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
-                     className="text-xs px-3 py-1.5 rounded-full font-semibold mt-2 w-full"
-                     style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
-                     📣 Notificar clientes via WhatsApp
-                  </button>
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="space-y-3">
+  <div>
+    <h3 className="font-bold gold-text">{p.title}</h3>
+    <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.6)" }}>{p.description}</p>
+    <p className="text-xs mt-2" style={{ color: "rgba(212,175,55,0.3)" }}>
+      {new Date(p.startsAt).toLocaleDateString('pt-BR')} → {new Date(p.endsAt).toLocaleDateString('pt-BR')}
+    </p>
+  </div>
+
+  <div className="flex gap-2">
+    <button onClick={() => togglePromo(p.id)} disabled={toggling}
+      className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+      style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
+      {p.active ? "✓ Ativa" : "○ Inativa"}
+    </button>
+    <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
+      className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+      style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
+      📣 WhatsApp
+    </button>
+  </div>
+</div>
       )}
     </div>
   );
