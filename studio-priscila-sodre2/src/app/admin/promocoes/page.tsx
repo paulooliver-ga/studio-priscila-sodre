@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 interface Promotion { id: string; title: string; description: string; active: boolean; startsAt: string; endsAt: string; }
 
 export default function PromocoesAdminPage() {
-  const [sending, setSending] = useState(false);
+  const [toggling, setToggling] = useState(false);
 
   async function handleAdd(e: React.FormEvent) {
   e.preventDefault();
