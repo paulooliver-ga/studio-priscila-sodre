@@ -96,29 +96,27 @@ export default function PromocoesAdminPage() {
         </form>
       </div>
       {loading ? <p className="text-center py-8" style={{ color: "rgba(212,175,55,0.4)" }}>Carregando...</p> : (
-      <div className="space-y-3">
-  <div>
-    <h3 className="font-bold gold-text">{p.title}</h3>
-    <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.6)" }}>{p.description}</p>
-    <p className="text-xs mt-2" style={{ color: "rgba(212,175,55,0.3)" }}>
-      {new Date(p.startsAt).toLocaleDateString('pt-BR')} → {new Date(p.endsAt).toLocaleDateString('pt-BR')}
-    </p>
-  </div>
+       <div className="space-y-3">
+      <div>
+        <h3 className="font-bold gold-text">{p.title}</h3>
+        <p className="text-sm mt-1" style={{ color: "rgba(212,175,55,0.6)" }}>{p.description}</p>
+        <p className="text-xs mt-2" style={{ color: "rgba(212,175,55,0.3)" }}>
+          {new Date(p.startsAt).toLocaleDateString('pt-BR')} → {new Date(p.endsAt).toLocaleDateString('pt-BR')}
+        </p>
+      </div>
 
-  <div className="flex gap-2">
-    <button onClick={() => togglePromo(p.id)} disabled={toggling}
-      className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-      style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
-      {p.active ? "✓ Ativa" : "○ Inativa"}
-    </button>
-    <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
-      className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
-      style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
-      📣 WhatsApp
-    </button>
-  </div>
-</div>
-      )}
+      <div className="flex gap-2">
+        <button onClick={() => togglePromo(p.id)} disabled={toggling}
+          className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+          style={{ background: p.active ? "rgba(212,175,55,0.2)" : "rgba(100,100,100,0.2)", color: p.active ? "#D4AF37" : "#999" }}>
+          {p.active ? "✓ Ativa" : "○ Inativa"}
+        </button>
+        <button onClick={() => sendWhatsAppReminder(p)} disabled={sending}
+          className="flex-1 text-xs px-3 py-2 rounded-full font-semibold"
+          style={{ background: "rgba(37,211,102,0.15)", color: "#25d366" }}>
+          📣 WhatsApp
+        </button>
+      </div>
     </div>
-  );
-}
+  </div>
+))}
