@@ -112,33 +112,31 @@ async function deletePromo(id: string) {
   } finally {
     setDeleting(false);
   }
-}
+}  
 
 async function sendWhatsAppReminder(promo: Promotion) {
   setSending(true);
   try {
-    setSending(true);
-    try {
-      const res = await fetch("/api/admin/notify-clients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: promo.title, description: promo.description }),
-      });
-      const data = await res.json();
-      setWaLinks(data.links);
-      toast.success(`${data.count} clientes encontradas! 📣`);
-    } catch {
-      toast.error("Erro ao buscar clientes");
-    } finally {
-      setSending(false);
-    }
+    const res = await fetch("/api/admin/notify-clients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: promo.title, description: promo.description }),
+    });
+    const data = await res.json();
+    setWaLinks(data.links);
+    toast.success(`${data.count} clientes encontradas! 📣`);
+  } catch {
+    toast.error("Erro ao buscar clientes");
+  } finally {
+    setSending(false);
   }
+}
 
-  useEffect(() => {
-    load();
-  }, []);
+useEffect(() => {
+  load();
+}, []);
 
- async function togglePromo(id: string) {
+async function togglePromo(id: string) {
   setToggling(true);
   try {
     const res = await fetch(`/api/admin/promotions/${id}`, {
