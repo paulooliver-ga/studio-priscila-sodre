@@ -33,6 +33,25 @@ export default function PromocoesAdminPage() {
   const [adding, setAdding] = useState(false);
   const [waLinks, setWaLinks] = useState<{name: string; phone: string; link: string}[]>([]);
 
+  async function load() {
+  setLoading(true);
+  try {
+    const res = await fetch("/api/admin/promotions");
+    if (!res.ok) throw new Error("Erro");
+    const data = await res.json();
+    setPromos(data);
+  } catch {
+    toast.error("Erro ao carregar");
+  } finally {
+    setLoading(false);
+  }
+}
+  useEffect(() => {
+  load();
+}, []);
+
+
+
  async function togglePromo(id: string) {
   setToggling(true);
   try {
