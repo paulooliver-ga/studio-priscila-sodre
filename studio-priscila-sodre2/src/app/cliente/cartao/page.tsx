@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getOrCreateCard } from "@/lib/loyalty";
+import ScannedAlert from "./ScannedAlert";
 
 export default async function CartaoPage({ searchParams }: { searchParams: { scanned?: string; error?: string } }) {
   const user = await getSession();
@@ -35,11 +36,7 @@ export default async function CartaoPage({ searchParams }: { searchParams: { sca
   return (
     <div className="space-y-5">
       {searchParams.scanned === "1" && (
-       
-    <div className="rounded-2xl p-4 text-center font-semibold"
-        style={{ background: "rgba(212,175,55,0.15)", border: "1px solid rgba(212,175,55,0.4)", color: "#D4AF37" }}>
-           ✅ Serviço registrado no seu cartão!
-     </div>
+      <ScannedAlert />
  )}
 
  {isBirthday && (
