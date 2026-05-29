@@ -5,7 +5,7 @@ import { getOrCreateCard } from "@/lib/loyalty";
 import ScannedAlert from "./ScannedAlert";
 
 export default async function CartaoPage({ searchParams }: { searchParams: { scanned?: string; error?: string } }) {
-  const user = await getSession();
+  console.log("SEARCH PARAMS:", searchParams);  const user = await getSession();
   const today = new Date();
   const isBirthday = user.birthdate && 
   new Date(user.birthdate).getDate() === today.getDate() &&
